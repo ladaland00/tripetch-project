@@ -39,11 +39,59 @@ a {
   padding: 0;
   margin: 0;
 }
-
+@mixin mobile-list {
+  flex: 0 0 100vw;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+@mixin even-bg {
+  @apply bg-blue-color text-white;
+}
+@mixin odd-base($order: 0) {
+  @if $order == 0 {
+    @apply bg-white text-white;
+  }
+  @if $order == 1 {
+    @apply bg-bg-grey;
+  }
+  @if $order == 2 {
+    @apply bg-purple-color text-white;
+  }
+}
+@mixin left-content($size: sm) {
+  @if $size == md {
+    padding-left: 18rem;
+  }
+  @if $size == lg {
+    padding-left: 25%;
+  }
+  @if $size == xl {
+    padding-left: 50%;
+  }
+  @if $size == 2xl {
+    padding-left: 50%;
+    padding-right: 20%;
+  }
+}
+@mixin right-content($size: sm) {
+  @if $size == md {
+    padding-right: 20rem;
+  }
+  @if $size == lg {
+    padding-right: 45%;
+  }
+  @if $size == xl {
+    padding-right: 68%;
+    padding-left: 5%;
+  }
+  @if $size == 2xl {
+    padding-right: 68%;
+    padding-left: 12%;
+  }
+}
 .box {
   display: flex;
   flex-direction: column;
-
   height: 800px;
   .tittle-area {
     order: -2;
@@ -55,38 +103,18 @@ a {
     scroll-snap-type: x mandatory;
     display: flex;
     overflow-x: scroll;
-    .description-0 {
-      flex: 0 0 100vw;
-      scroll-snap-align: start;
-      scroll-snap-stop: normal;
-    }
-    .description-1 {
-      scroll-snap-align: start;
-      scroll-snap-stop: normal;
-      flex: 0 0 100vw;
-    }
+    .description-0,
+    .description-1,
     .description-2 {
-      flex: 0 0 100vw;
-      scroll-snap-align: start;
-      scroll-snap-stop: normal;
+      @include mobile-list;
     }
   }
-}
-@mixin even-bg {
-  background: var(--blue-color);
-  color: white;
-}
-@mixin left-content($size: sm) {
-  @if $size == lg {
-    border-radius: $radius;
+  .pagination {
+    display: flex;
+    @apply mx-auto;
   }
 }
-@mixin right-content($size: sm) {
-  @if $size == 2xl {
-    padding-right: 68%;
-    padding-left: 12%;
-  }
-}
+
 @screen md {
   .box {
     display: grid;
@@ -95,33 +123,31 @@ a {
     &:nth-child(odd) {
       figure {
         grid-area: 1 / 1 / 5 / 5;
-        // overflow: hidden;
         picture {
           transform: scale(2) translate(-15%, 45%);
         }
       }
       .tittle-area {
         grid-area: 1 / 1 / auto / 11;
-        padding-left: 18rem;
+        @include left-content(sm);
       }
       .description-0 {
-        background: #fff;
         grid-area: 2 / 1 / auto / 11;
-        padding-left: 18rem;
+        @include left-content(sm);
+        @include odd-base(0);
         padding-right: 2rem;
       }
       .description-1 {
-        background: var(--bg-grey);
+        @include odd-base(1);
         grid-area: 3 / 1 / auto / 11;
-        padding-left: 18rem;
+        @include left-content(sm);
         padding-right: 2rem;
       }
       .description-2 {
-        background: var(--purple-color);
-        color: white;
+        @include odd-base(2);
         grid-area: 4 / 1 / auto / 11;
         padding-bottom: 60px !important;
-        padding-left: 18rem;
+        @include left-content(sm);
       }
     }
     &:nth-child(even) {
@@ -135,24 +161,24 @@ a {
       .tittle-area {
         width: auto;
         grid-area: 1 / 1 / 2 / 11;
-        padding-right: 20rem;
+        @include right-content(md);
       }
       .description-0 {
         background: #fff;
         grid-area: 2 / 1 / 5 / 11;
-        padding-right: 20rem;
+        @include right-content(md);
         padding-top: 0 !important;
       }
       .description-1 {
         background: var(--bg-grey);
         grid-area: 5 / 1 / 8 / 11;
-        padding-right: 20rem;
+        @include right-content(md);
       }
       .description-2 {
         color: white;
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 56px !important;
-        padding-right: 20rem;
+        @include right-content(md);
         @include even-bg;
       }
     }
@@ -162,7 +188,7 @@ a {
   .box {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
+    grid-template-rows: repeat(10, auto);
     &:nth-child(odd) {
       figure {
         grid-area: 1 / 1 / 11 / 5;
@@ -172,30 +198,28 @@ a {
       }
       .tittle-area {
         grid-area: 1 / 1 / 2 / 11;
-        padding-left: 25%;
+        @include left-content(lg);
       }
       .description-0 {
-        background: #fff;
+        @include odd-base(0);
         grid-area: 2 / 1 / 5 / 11;
-        padding-left: 25%;
+        @include left-content(lg);
       }
       .description-1 {
-        background: var(--bg-grey);
+        @include odd-base(1);
         grid-area: 5 / 1 / 8 / 11;
-        padding-left: 25%;
+        @include left-content(lg);
       }
       .description-2 {
-        background: var(--purple-color);
-        color: white;
+        @include odd-base(2);
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 60px !important;
-        padding-left: 25%;
+        @include left-content(lg);
       }
     }
     &:nth-child(even) {
       figure {
         grid-area: 1 / 7 / 11 / 11;
-        overflow: visible;
         picture {
           transform: scale(1) translate(5%, 24%);
         }
@@ -203,25 +227,25 @@ a {
       .tittle-area {
         width: auto;
         grid-area: 1 / 1 / 2 / 11;
-        padding-right: 18rem;
+        @include right-content(lg);
       }
       .description-0 {
         background: #fff;
         grid-area: 2 / 1 / 5 / 11;
-        padding-right: 18rem;
+        @include right-content(lg);
         padding-top: 0 !important;
       }
       .description-1 {
         background: var(--bg-grey);
         grid-area: 5 / 1 / 8 / 11;
-        padding-right: 18rem;
+        @include right-content(lg);
       }
       .description-2 {
         @include even-bg;
         color: white;
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 60px !important;
-        padding-right: 18rem;
+        @include right-content(lg);
       }
     }
   }
@@ -241,24 +265,23 @@ a {
       }
       .tittle-area {
         grid-area: 1 / 1 / 2 / 11;
-        padding-left: 50%;
+        @include left-content(xl);
       }
       .description-0 {
-        background: #fff;
+        @include odd-base(0);
         grid-area: 2 / 1 / 5 / 11;
-        padding-left: 50%;
+        @include left-content(xl);
       }
       .description-1 {
-        background: var(--bg-grey);
+        @include odd-base(1);
         grid-area: 5 / 1 / 8 / 11;
-        padding-left: 50%;
+        @include left-content(xl);
       }
       .description-2 {
-        background: var(--purple-color);
-        color: white;
+        @include odd-base(2);
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 60px !important;
-        padding-left: 50%;
+        @include left-content(xl);
       }
     }
     &:nth-child(even) {
@@ -272,29 +295,25 @@ a {
       .tittle-area {
         width: auto;
         grid-area: 1 / 1 / 2 / 11;
-        padding-right: 68%;
-        padding-left: 5%;
+        @include right-content(xl);
       }
       .description-0 {
         background: #fff;
         grid-area: 2 / 1 / 5 / 11;
-        padding-right: 68%;
-        padding-left: 5%;
+        @include right-content(xl);
         padding-top: 0 !important;
       }
       .description-1 {
         background: var(--bg-grey);
         grid-area: 5 / 1 / 8 / 11;
-        padding-right: 68%;
-        padding-left: 5%;
+        @include right-content(xl);
       }
       .description-2 {
         @include even-bg;
         color: white;
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 60px !important;
-        padding-right: 68%;
-        padding-left: 5%;
+        @include right-content(xl);
       }
     }
   }
@@ -314,33 +333,28 @@ a {
       }
       .tittle-area {
         grid-area: 1 / 1 / 2 / 11;
-        padding-left: 50%;
+        @include left-content(2xl);
       }
       .description-0 {
-        background: #fff;
+        @include odd-base(0);
         grid-area: 2 / 1 / 5 / 11;
-        padding-left: 50%;
-        padding-right: 20%;
+        @include left-content(2xl);
       }
       .description-1 {
-        background: var(--bg-grey);
+        @include odd-base(1);
         grid-area: 5 / 1 / 8 / 11;
-        padding-left: 50%;
-        padding-right: 20%;
+        @include left-content(2xl);
       }
       .description-2 {
-        background: var(--purple-color);
-        color: white;
+        @include odd-base(2);
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 60px !important;
-        padding-left: 50%;
-        padding-right: 20%;
+        @include left-content(2xl);
       }
     }
     &:nth-child(even) {
       figure {
         grid-area: 1 / 7 / 11 / 11;
-        overflow: visible;
         picture {
           transform: scale(1) translate(-15%, -5%);
         }
@@ -348,21 +362,18 @@ a {
       .tittle-area {
         width: auto;
         grid-area: 1 / 1 / 2 / 11;
-        padding-right: 60%;
-        padding-left: 12%;
+        @include right-content(2xl);
       }
       .description-0 {
         background: #fff;
         grid-area: 2 / 1 / 5 / 11;
-        padding-right: 60%;
-        padding-left: 12%;
+        @include right-content(2xl);
         padding-top: 0 !important;
       }
       .description-1 {
         background: var(--bg-grey);
         grid-area: 5 / 1 / 8 / 11;
-        padding-right: 60%;
-        padding-left: 12%;
+        @include right-content(2xl);
       }
       .description-2 {
         @include even-bg;

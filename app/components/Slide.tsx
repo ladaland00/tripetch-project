@@ -43,14 +43,21 @@ const Slide = (props: Props) => {
     </>
   );
   return (
-    <div className="w-screen  pb-14 md:pb-0 box md:pt-16">
+    <div className="w-screen pb-14 md:pb-0 box md:pt-16">
       <h2 className="tittle-area w-screen text-[50px] md:text-[90px] text-grey-color px-[18px]">
         {title}
       </h2>
       {isMobile ? (
-        <div className="mobile">
-          <ShowListComponent />
-        </div>
+        <>
+          <div className="mobile">
+            <ShowListComponent />
+          </div>
+          <div className="pagination">
+            {list.map((_, id) => (
+              <p>{id + 1}</p>
+            ))}
+          </div>
+        </>
       ) : (
         <ShowListComponent />
       )}
