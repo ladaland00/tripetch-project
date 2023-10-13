@@ -70,12 +70,12 @@ const Slide = (props: Props) => {
         <picture className="flex">
           <source srcSet={mobile_image} media="(max-width: 767px)" />
           <source
-            media="(min-width:767px) and (max-width: 1319px)"
+            media="(min-width:767px) and (max-width: 1239.99px)"
             srcSet={tablet_image}
           />
 
           <source
-            media="(min-width: 1320px)"
+            media="(min-width: 1240px)"
             srcSet={desktop_image}
             height={851}
           />
