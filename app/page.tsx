@@ -5,7 +5,8 @@ export default function Home() {
     {
       title: "ATHLETS",
       desktop_image: "graphic-desktop-1.svg",
-      mobile_image: "graphic-mobile_1.svg",
+      tablet_image: "graphic-tablet-1.svg",
+      mobile_image: "graphic-mobile-1.svg",
       list: [
         {
           title: "CONNECTION",
@@ -27,6 +28,7 @@ export default function Home() {
     {
       title: "PLAYERS",
       desktop_image: "graphic-desktop-2.svg",
+      tablet_image: "graphic-tablet-2.svg",
       mobile_image: "graphic-mobile-2.svg",
       list: [
         {

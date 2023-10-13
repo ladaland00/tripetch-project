@@ -4,6 +4,7 @@ import useMediaQuery from "../hooks/useMediaQuery";
 import { useDebounce } from "../hooks/useDebounce";
 interface Props {
   mobile_image: string;
+  tablet_image: string;
   desktop_image: string;
   list: IListProps[];
   title: string;
@@ -13,7 +14,7 @@ interface IListProps {
   description: string;
 }
 const Slide = (props: Props) => {
-  const { title, list, desktop_image, mobile_image } = props;
+  const { title, list, desktop_image, tablet_image, mobile_image } = props;
   const [currentIndex, setIndex] = useState(0);
 
   const scrollWithMoreDebounce = useDebounce((e) => {
@@ -43,7 +44,7 @@ const Slide = (props: Props) => {
     </>
   );
   return (
-    <div className="w-screen pb-12 md:pb-0 box md:pt-16">
+    <div className="box">
       <h2 className="tittle-area">{title}</h2>
       {isMobile ? (
         <>
@@ -67,8 +68,18 @@ const Slide = (props: Props) => {
 
       <figure className="order-1">
         <picture className="flex">
-          <source srcSet={mobile_image} media="(orientation: portrait)" />
-          <img className="mx-auto my-auto" src={desktop_image} alt="" />
+          <source srcSet={mobile_image} media="(max-width: 767px)" />
+          <source
+            media="(min-width:767px) and (max-width: 1319px)"
+            srcSet={tablet_image}
+          />
+
+          <source
+            media="(min-width: 1320px)"
+            srcSet={desktop_image}
+            height={851}
+          />
+          <img className="mx-auto my-auto" src={mobile_image} alt="box-img" />
         </picture>
       </figure>
     </div>
