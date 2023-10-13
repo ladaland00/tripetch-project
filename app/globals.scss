@@ -15,7 +15,6 @@
   :root {
     --grey-color: #e7e7e7;
     --dark-grey-color: #c2c2c2;
-    --dark-grey-color: #c2c2c2;
     --bg-grey: #f5f4f9;
     --purple-color: #603ebe;
     --blue-color: #090c35;
@@ -47,9 +46,12 @@ a {
 @mixin even-bg {
   @apply bg-blue-color text-white;
 }
+@mixin detail-base {
+  @apply py-[17px] px-[18px] md:pb-[24px] md:pt-0  md:pr-[18px];
+}
 @mixin odd-base($order: 0) {
   @if $order == 0 {
-    @apply bg-white text-white;
+    @apply bg-white;
   }
   @if $order == 1 {
     @apply bg-bg-grey;
@@ -85,36 +87,86 @@ a {
     padding-left: 5%;
   }
   @if $size == 2xl {
-    padding-right: 68%;
-    padding-left: 12%;
+    padding-right: 55.3%;
+    padding-left: 15%;
+  }
+}
+@mixin sub-title-group-style($type: "purple") {
+  @if $type == "purple" {
+    .sub-title-group {
+      .sub-title-index {
+        @apply border-white text-purple-color;
+      }
+    }
+  }
+  @if $type == "blue" {
+    .sub-title-group {
+      .sub-title-index {
+        @apply border-white text-blue-color;
+      }
+    }
   }
 }
 .box {
   display: flex;
   flex-direction: column;
   height: 800px;
+  background: linear-gradient(0deg, var(--bg-grey) 50%, white 50%);
   .tittle-area {
     order: -2;
+    @apply w-screen text-[50px] md:text-[90px] text-grey-color px-[18px];
   }
   figure {
     order: -1;
+  }
+  .detail-0,
+  .detail-1,
+  .detail-2 {
+    @include detail-base;
   }
   .mobile {
     scroll-snap-type: x mandatory;
     display: flex;
     overflow-x: scroll;
-    .description-0,
-    .description-1,
-    .description-2 {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    .detail-0,
+    .detail-1,
+    .detail-2 {
       @include mobile-list;
+      @include detail-base;
     }
   }
   .pagination {
-    display: flex;
+    display: inline-flex;
     @apply mx-auto;
+    .bullet-pagination {
+      width: 12px;
+      height: 12px;
+      @apply bg-dark-grey-color m-1;
+      border-radius: 50%;
+      &.active {
+        @apply bg-purple-color;
+      }
+    }
+  }
+  .sub-title-group {
+    .sub-title-index {
+      @apply text-[14px] md:text-[18px] mr-2 border-b-4  md:my-6 border-purple-color;
+    }
+    .sub-title-text {
+      @apply text-[28px] md:text-[36px] text-dark-grey-color tracking-[1.5px];
+    }
+    .description {
+      @apply text-[15px] md:text-[18px] md:leading-[28px];
+    }
   }
 }
-
+// 	768px
 @screen md {
   .box {
     display: grid;
@@ -124,30 +176,32 @@ a {
       figure {
         grid-area: 1 / 1 / 5 / 5;
         picture {
-          transform: scale(2) translate(-15%, 45%);
+          transform: scale(2.1) translate(-15%, 45%);
         }
       }
       .tittle-area {
         grid-area: 1 / 1 / auto / 11;
-        @include left-content(sm);
+        @include left-content(md);
       }
-      .description-0 {
+
+      .detail-0 {
         grid-area: 2 / 1 / auto / 11;
-        @include left-content(sm);
+        @include left-content(md);
         @include odd-base(0);
         padding-right: 2rem;
       }
-      .description-1 {
+      .detail-1 {
         @include odd-base(1);
         grid-area: 3 / 1 / auto / 11;
-        @include left-content(sm);
+        @include left-content(md);
         padding-right: 2rem;
       }
-      .description-2 {
+      .detail-2 {
         @include odd-base(2);
+        @include sub-title-group-style("blue");
         grid-area: 4 / 1 / auto / 11;
         padding-bottom: 60px !important;
-        @include left-content(sm);
+        @include left-content(md);
       }
     }
     &:nth-child(even) {
@@ -158,32 +212,35 @@ a {
           transform: scale(2) translate(5%, 24%);
         }
       }
+
       .tittle-area {
         width: auto;
         grid-area: 1 / 1 / 2 / 11;
         @include right-content(md);
       }
-      .description-0 {
+      .detail-0 {
         background: #fff;
         grid-area: 2 / 1 / 5 / 11;
         @include right-content(md);
         padding-top: 0 !important;
       }
-      .description-1 {
+      .detail-1 {
         background: var(--bg-grey);
         grid-area: 5 / 1 / 8 / 11;
         @include right-content(md);
       }
-      .description-2 {
+      .detail-2 {
         color: white;
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 56px !important;
         @include right-content(md);
         @include even-bg;
+        @include sub-title-group-style("purple");
       }
     }
   }
 }
+// 1024px
 @screen lg {
   .box {
     display: grid;
@@ -200,17 +257,17 @@ a {
         grid-area: 1 / 1 / 2 / 11;
         @include left-content(lg);
       }
-      .description-0 {
+      .detail-0 {
         @include odd-base(0);
         grid-area: 2 / 1 / 5 / 11;
         @include left-content(lg);
       }
-      .description-1 {
+      .detail-1 {
         @include odd-base(1);
         grid-area: 5 / 1 / 8 / 11;
         @include left-content(lg);
       }
-      .description-2 {
+      .detail-2 {
         @include odd-base(2);
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 60px !important;
@@ -229,18 +286,18 @@ a {
         grid-area: 1 / 1 / 2 / 11;
         @include right-content(lg);
       }
-      .description-0 {
+      .detail-0 {
         background: #fff;
         grid-area: 2 / 1 / 5 / 11;
         @include right-content(lg);
         padding-top: 0 !important;
       }
-      .description-1 {
+      .detail-1 {
         background: var(--bg-grey);
         grid-area: 5 / 1 / 8 / 11;
         @include right-content(lg);
       }
-      .description-2 {
+      .detail-2 {
         @include even-bg;
         color: white;
         grid-area: 8 / 1 / 11 / 11;
@@ -250,7 +307,7 @@ a {
     }
   }
 }
-
+// 1280px
 @screen xl {
   .box {
     display: grid;
@@ -267,17 +324,17 @@ a {
         grid-area: 1 / 1 / 2 / 11;
         @include left-content(xl);
       }
-      .description-0 {
+      .detail-0 {
         @include odd-base(0);
         grid-area: 2 / 1 / 5 / 11;
         @include left-content(xl);
       }
-      .description-1 {
+      .detail-1 {
         @include odd-base(1);
         grid-area: 5 / 1 / 8 / 11;
         @include left-content(xl);
       }
-      .description-2 {
+      .detail-2 {
         @include odd-base(2);
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 60px !important;
@@ -297,18 +354,18 @@ a {
         grid-area: 1 / 1 / 2 / 11;
         @include right-content(xl);
       }
-      .description-0 {
+      .detail-0 {
         background: #fff;
         grid-area: 2 / 1 / 5 / 11;
         @include right-content(xl);
         padding-top: 0 !important;
       }
-      .description-1 {
+      .detail-1 {
         background: var(--bg-grey);
         grid-area: 5 / 1 / 8 / 11;
         @include right-content(xl);
       }
-      .description-2 {
+      .detail-2 {
         @include even-bg;
         color: white;
         grid-area: 8 / 1 / 11 / 11;
@@ -318,7 +375,7 @@ a {
     }
   }
 }
-
+// 	1536px
 @screen 2xl {
   .box {
     display: grid;
@@ -328,24 +385,24 @@ a {
       figure {
         grid-area: 1 / 1 / 11 / 5;
         picture {
-          transform: scale(0.8) translate(0, -10%);
+          transform: scale(0.8) translate(10%, -10%);
         }
       }
       .tittle-area {
         grid-area: 1 / 1 / 2 / 11;
         @include left-content(2xl);
       }
-      .description-0 {
+      .detail-0 {
         @include odd-base(0);
         grid-area: 2 / 1 / 5 / 11;
         @include left-content(2xl);
       }
-      .description-1 {
+      .detail-1 {
         @include odd-base(1);
         grid-area: 5 / 1 / 8 / 11;
         @include left-content(2xl);
       }
-      .description-2 {
+      .detail-2 {
         @include odd-base(2);
         grid-area: 8 / 1 / 11 / 11;
         padding-bottom: 60px !important;
@@ -364,18 +421,18 @@ a {
         grid-area: 1 / 1 / 2 / 11;
         @include right-content(2xl);
       }
-      .description-0 {
+      .detail-0 {
         background: #fff;
         grid-area: 2 / 1 / 5 / 11;
         @include right-content(2xl);
         padding-top: 0 !important;
       }
-      .description-1 {
+      .detail-1 {
         background: var(--bg-grey);
         grid-area: 5 / 1 / 8 / 11;
         @include right-content(2xl);
       }
-      .description-2 {
+      .detail-2 {
         @include even-bg;
         @include right-content(2xl);
         grid-area: 8 / 1 / 11 / 11;

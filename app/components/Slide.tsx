@@ -1,6 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useMediaQuery from "../hooks/useMediaQuery";
+import { useDebounce } from "../hooks/useDebounce";
 interface Props {
   mobile_image: string;
   desktop_image: string;
@@ -13,6 +14,15 @@ interface IListProps {
 }
 const Slide = (props: Props) => {
   const { title, list, desktop_image, mobile_image } = props;
+  const [currentIndex, setIndex] = useState(0);
+
+  const scrollWithMoreDebounce = useDebounce((e) => {
+    const currentTarget = e.target;
+    const width = currentTarget.clientWidth;
+    const currentXPosition = currentTarget.scrollLeft;
+    setIndex(currentXPosition / width);
+  }, 500);
+
   const PatternIndex = (index: number) => {
     if (index < 9) return "0" + (index + 1);
     if (index === 9) return "10";
@@ -22,41 +32,34 @@ const Slide = (props: Props) => {
   const ShowListComponent = () => (
     <>
       {list.map((detail, id) => (
-        <div
-          key={"detail-" + detail.title}
-          className={`py-[17px] px-[18px] md:pb-[24px] md:pt-0  md:pr-[18px] description-${id}`}
-        >
-          <div className="flex items-center">
-            <p className="text-[14px] md:text-[18px] mr-2 border-b-4 border-purple-color md:my-6">
-              {PatternIndex(id)}
-            </p>
-            <h3 className="text-[28px] md:text-[36px] text-dark-grey-color tracking-[1.5px]">
-              {detail.title}
-            </h3>
+        <div key={"detail-" + detail.title} className={`detail-${id}`}>
+          <div className="sub-title-group flex items-center">
+            <p className="sub-title-index">{PatternIndex(id)}</p>
+            <h3 className="sub-title-text ">{detail.title}</h3>
           </div>
-
-          <p className="text-[15px] md:text-[18px] md:leading-[28px]">
-            {detail.description}
-          </p>
+          <p className="description">{detail.description}</p>
         </div>
       ))}
     </>
   );
   return (
-    <div className="w-screen pb-14 md:pb-0 box md:pt-16">
-      <h2 className="tittle-area w-screen text-[50px] md:text-[90px] text-grey-color px-[18px]">
-        {title}
-      </h2>
+    <div className="w-screen pb-12 md:pb-0 box md:pt-16">
+      <h2 className="tittle-area">{title}</h2>
       {isMobile ? (
         <>
-          <div className="mobile">
+          <div className="mobile" onScroll={scrollWithMoreDebounce}>
             <ShowListComponent />
           </div>
-          <div className="pagination">
+          <dl className="pagination">
             {list.map((_, id) => (
-              <p>{id + 1}</p>
+              <dd
+                key={`pagination-${title}-${id}`}
+                className={`bullet-pagination ${
+                  id == currentIndex ? "active" : ""
+                }`}
+              ></dd>
             ))}
-          </div>
+          </dl>
         </>
       ) : (
         <ShowListComponent />
